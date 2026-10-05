@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jon Roses — Good Day</title>
+<meta name="description" content="Jon Roses makes heartfelt songs in English and Spanish for anyone still getting to know themselves. Listen to Good Day, out now.">
+<meta property="og:title" content="Jon Roses — Good Day (with DJ Lico)">
+<meta property="og:description" content="Out now. Listen everywhere.">
+<meta property="og:image" content="https://jonroses.github.io/good-day.jpg">
+<meta property="og:url" content="https://jonroses.github.io/">
+<style>
+  :root {
+    --teal: #1f5f57;
+    --cream: #fde3b8;
+    --amber: #f2a33a;
+    --coral: #e2574c;
+    --ink: #17302c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--teal);
+    color: var(--cream);
+    font-family: ui-rounded, "SF Pro Rounded", "Avenir Next", system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 28px 16px 40px;
+  }
+  main { width: 100%; max-width: 420px; text-align: center; }
+  .cover {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 18px;
+    display: block;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, .35);
+  }
+  h1 { font-size: 1.9rem; margin: 22px 0 2px; letter-spacing: .01em; }
+  .song { margin: 0; font-size: 1.05rem; opacity: .9; }
+  .tagline { margin: 14px auto 22px; max-width: 34ch; line-height: 1.45; opacity: .85; }
+  .links { display: grid; gap: 10px; }
+  .links a {
+    display: block;
+    padding: 15px 18px;
+    border-radius: 14px;
+    background: var(--cream);
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .links a:hover, .links a:focus-visible { transform: translateY(-2px); background: #fff3dc; }
+  .links a.primary { background: var(--coral); color: #fff; }
+  .links a.primary:hover, .links a.primary:focus-visible { background: #ec6a5f; }
+  .links a small { display: block; font-weight: 500; opacity: .75; margin-top: 2px; }
+  form {
+    margin-top: 26px;
+    padding: 18px;
+    border-radius: 16px;
+    background: rgba(253, 227, 184, .12);
+    border: 1px solid rgba(253, 227, 184, .3);
+  }
+  form h2 { font-size: 1.05rem; margin: 0 0 4px; }
+  form p { margin: 0 0 12px; font-size: .9rem; opacity: .85; }
+  .row { display: flex; gap: 8px; }
+  input[type=email] {
+    flex: 1; min-width: 0;
+    padding: 13px 14px; border-radius: 12px; border: 0;
+    font: inherit; color: var(--ink); background: #fff;
+  }
+  button {
+    padding: 13px 16px; border-radius: 12px; border: 0;
+    font: inherit; font-weight: 700; cursor: pointer;
+    background: var(--amber); color: var(--ink);
+  }
+  .fine { font-size: .75rem; opacity: .7; margin-top: 10px; }
+  footer { margin-top: 28px; font-size: .78rem; opacity: .65; }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { .links a { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <img class="cover" src="good-day.jpg" alt="Good Day cover art" width="900" height="900">
+  <h1>Jon Roses</h1>
+  <p class="song">Good Day (with DJ Lico) — out now</p>
+  <p class="tagline">Heartfelt songs in English and Spanish for anyone still getting to know themselves.</p>
+
+  <nav class="links" id="links" aria-label="Listen and follow"></nav>
+
+  <form id="signup" hidden>
+    <h2>Be first to hear the next one</h2>
+    <p>New songs and shows, straight from me. No spam.</p>
+    <div class="row">
+      <input type="email" name="email" placeholder="you@email.com" autocomplete="email" required aria-label="Email address">
+      <button type="submit">Join</button>
+    </div>
+    <p class="fine">By joining you agree to receive emails from Jon Roses. Unsubscribe any time.</p>
+  </form>
+
+  <footer>© Young Rose Entertainment</footer>
+</main>
+
+<script>
+// ---- Settings: fill these in; anything left empty stays hidden. ----
+const LINKS = [
+  { id: "spotify",   label: "Spotify",          note: "Listen and follow",  url: "https://open.spotify.com/artist/5VBKBbOsr4HYre0ie9P9B7", primary: true },
+  { id: "apple",     label: "Apple Music",      note: "",                   url: "https://music.apple.com/us/artist/jon-roses/6813196077" },
+  { id: "youtube",   label: "Watch the video",  note: "YouTube",            url: "https://youtu.be/X0GyM2lxYwo" },
+  { id: "instagram", label: "Instagram",        note: "@_jonroses",         url: "https://www.instagram.com/_jonroses/" },
+  { id: "facebook",  label: "Facebook",         note: "",                   url: "" },
+];
+const SIGNUP_ACTION = "";  // email service form URL; the signup box appears once this is set
+const TRACK_URL = "";      // endpoint that records clicks; empty = no tracking
+// --------------------------------------------------------------------
+
+function track(event, detail) {
+  if (!TRACK_URL) return;
+  const body = JSON.stringify({ event, detail, page: location.pathname, ref: document.referrer, t: Date.now() });
+  navigator.sendBeacon(TRACK_URL, body);
+}
+
+const nav = document.getElementById("links");
+for (const link of LINKS.filter(l => l.url)) {
+  const a = document.createElement("a");
+  a.href = link.url;
+  a.rel = "noopener";
+  if (link.primary) a.className = "primary";
+  a.textContent = link.label;
+  if (link.note) {
+    const small = document.createElement("small");
+    small.textContent = link.note;
+    a.appendChild(small);
+  }
+  a.addEventListener("click", () => track("click", link.id));
+  nav.appendChild(a);
+}
+
+const form = document.getElementById("signup");
+if (SIGNUP_ACTION) {
+  form.hidden = false;
+  form.action = SIGNUP_ACTION;
+  form.method = "post";
+  form.addEventListener("submit", () => track("signup"));
+}
+track("view");
+</script>
+</body>
+</html>
